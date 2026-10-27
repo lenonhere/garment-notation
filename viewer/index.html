@@ -64,6 +64,7 @@ body {
   display: flex;
   flex-direction: column;
   border-right: 1px solid #334155;
+  background: #0f172a;
 }
 
 .pane-label {
@@ -75,6 +76,28 @@ body {
   letter-spacing: 0.08em;
   background: #1e293b;
   border-bottom: 1px solid #1e293b;
+}
+
+.editor-container {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+  position: relative;
+}
+
+#line-numbers {
+  width: 48px;
+  padding: 16px 8px 16px 0;
+  font-family: 'SF Mono', 'Fira Code', 'JetBrains Mono', monospace;
+  font-size: 13px;
+  line-height: 1.6;
+  text-align: right;
+  color: #475569;
+  background: #0f172a;
+  user-select: none;
+  border-right: 1px solid #1e293b;
+  overflow: hidden;
+  white-space: pre;
 }
 
 textarea {
@@ -89,6 +112,8 @@ textarea {
   tab-size: 2;
   background: #0f172a;
   color: #e2e8f0;
+  overflow-y: auto;
+  white-space: pre;
 }
 
 textarea::selection {
@@ -250,6 +275,7 @@ textarea::selection {
           <option value="jacket_collar">Jacket Collar</option>
           <option value="blazer">Blazer (inline)</option>
           <option value="composed_blazer">Blazer (composed)</option>
+          <option value="kimono">Kimono</option>
           <option value="fitted_dress">Fitted Dress (princess + lining)</option>
         </optgroup>
         <optgroup label="Korosteleva Dataset (auto-converted)">
@@ -257,6 +283,13 @@ textarea::selection {
           <option value="k_skirt">Skirt (2-panel)</option>
           <option value="k_pants">Pants (straight)</option>
           <option value="k_dress">Dress (bodice + skirt)</option>
+        </optgroup>
+        <optgroup label="GarmentCodeData (auto-converted)">
+          <option value="gcd_tshirt">T-Shirt</option>
+          <option value="gcd_skirt">Skirt (2-panel)</option>
+          <option value="gcd_pants">Pants</option>
+          <option value="gcd_dress">Dress</option>
+          <option value="gcd_jumpsuit">Jumpsuit</option>
         </optgroup>
       </select>
       <a href="../docs/">Docs</a>
@@ -272,7 +305,10 @@ textarea::selection {
           <button class="src-btn" data-src="json">JSON</button>
         </div>
       </div>
-      <textarea id="editor" spellcheck="false"></textarea>
+      <div class="editor-container">
+        <div id="line-numbers"></div>
+        <textarea id="editor" spellcheck="false"></textarea>
+      </div>
     </div>
     <div class="viewer-pane">
       <div class="pane-label" style="display:flex; align-items:center; justify-content:space-between;">
@@ -291,6 +327,7 @@ textarea::selection {
             <button class="view-btn body-mode-btn active" data-body-mode="silhouette">Silhouette</button>
             <button class="view-btn body-mode-btn" data-body-mode="regions">Regions</button>
           </div>
+          <button id="seams-toggle" class="view-btn" title="Toggle seam overlays" style="display:none;">Seams</button>
           <div class="view-toggle">
             <button class="view-btn active" data-view="assembled">Assembled</button>
             <button class="view-btn" data-view="pieces">Pieces</button>
